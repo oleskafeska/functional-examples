@@ -4,14 +4,7 @@ public class FunctInterfaceExample {
 
     public static void main(String[] args) {
 
-        SquareFoot squareFoot = number -> {
-
-            if (number > 42) {
-                return 2;
-            } else {
-                return 0;
-            }
-        };
+        SquareFoot squareFoot = Math::sqrt;
 
         squareFoot.getSquareFoot(34);
     }
