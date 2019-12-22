@@ -4,55 +4,61 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class StreamExamples {
 
-    public static void main(String[] args) {
+    private List<Student> students;
 
-        // Hello there
+    public StreamExamples() {
+       students = buildStudentList();
+    }
 
-        List<Student> students = buildStudentList();
+    public void printStudentsCountOlderThan(int age) {
 
-        long count = students.stream()
-                .filter(student -> student.getAge() > 22)
+        long countOfStudents = students.stream()
+                .filter(student -> student.getAge() > age)
                 .count();
 
-        System.out.println(count);
+        System.out.println("Count of students: " + countOfStudents);
+    }
+
+    public void printStudentsNames() {
 
         List<String> studentsNames = students.stream()
                 .filter(student -> student.getAge() < 26)
                 .map(Student::getName)
                 .collect(Collectors.toList());
 
+        System.out.println("Students names: " + studentsNames);
+    }
+
+    public void printAllClasses() {
+
         Set<String> listOfClasses = students.stream()
                 .flatMap(student -> student.getClasses().stream())
                 .collect(Collectors.toSet());
 
-         System.out.println(listOfClasses);
+        System.out.println("List of classes: " + listOfClasses);
+    }
 
-        List<Student> anotherList = new ArrayList<>(students);
-
-        AtomicInteger amountOfAge = new AtomicInteger(0);
-
-        anotherList.forEach(student -> {
-
-            amountOfAge.getAndAdd(student.getAge());
-        });
+    public void printUserIdToStudent() {
 
         Map<String, Student> studentMap = students.stream()
                 .collect(Collectors.toMap(Student::getId, student -> student));
 
-        System.out.println(studentMap);
-
-        Map<String, Long> collect = students.stream()
-                .collect(Collectors.groupingBy(Student::getName, Collectors.counting()));
-
-        System.out.println(collect);
+        System.out.println("Students map: " + studentMap);
     }
 
-    public static List<Student> buildStudentList() {
+    public void printGroupedByNameStudentsList() {
+
+        Map<String, Long> groupedByNameStudentsMap = students.stream()
+                .collect(Collectors.groupingBy(Student::getName, Collectors.counting()));
+
+        System.out.println("Grouped by name: " + groupedByNameStudentsMap);
+    }
+
+    private List<Student> buildStudentList() {
 
         List<Student> students = new ArrayList<>();
 
